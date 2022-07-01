@@ -1,0 +1,6 @@
+.env
+flask_*.log
+nohup.out
+
+# dir
+__pycache__

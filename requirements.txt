@@ -1,0 +1,3 @@
+python-decouple
+flask
+flask_apscheduler
