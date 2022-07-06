@@ -47,11 +47,22 @@ class Collection(object):
             print(f'slug [{slug}] error: {err}')
             return None
         return data
+    
+    def get_stats(self, slug):
+        proxies = get_proxies()
+        try:
+            data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}/stats?format=json", 
+                headers=headers, proxies=proxies, timeout=1.5).json()
+        except Exception as err:
+            print(f'slug [{slug}] error: {err}')
+            return None
+        return data
 
 
 collection = Collection()
 
 
 if __name__ == '__main__':
-    print(collection.get_contract('0x06012c8cf97bead5deae237070f9587f8e7a266d'))
-    print(collection.get_collection('doodles-official'))
+    # print(collection.get_contract('0x06012c8cf97bead5deae237070f9587f8e7a266d'))
+    # print(collection.get_collection('doodles-official'))
+    print(collection.get_stats('doodles-official'))

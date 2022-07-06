@@ -68,6 +68,19 @@ def get_collection(slug):
     })
 
 
+@app.route('/opensea/stats/<slug>', methods=['POST', 'GET'])
+def get_stats(slug):
+    try:
+        nft_stats = collection.get_stats(slug)
+    except Exception as ex:
+        logging.error(ex)
+        return jsonify({'code': -1})
+    return jsonify({
+        'data': nft_stats,
+        'code': 0
+    })
+
+
 if __name__ == '__main__':
     scheduler.init_app(app)
     scheduler.start()
