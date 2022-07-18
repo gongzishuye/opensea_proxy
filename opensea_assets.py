@@ -24,34 +24,28 @@ class Assets(object):
     def __init__(self, ):
         pass
 
-    def get_owner_assets(self, owner):
+    def get_owner_assets(self, owner, cursor):
         proxies = get_proxies()
         assets_lst = []
-        cursor = ''
-        while True:
-            data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit=50&cursor={cursor}&format=json", 
-                headers=headers, proxies=proxies, timeout=1.5).json()
-            next_ = data.get('next')
-            assets = data.get('assets')
-            detail = data.get('detail')
 
-            if detail:
-                raise Exception(f'request error: {detail}')
-            if assets:
-                assets_lst.append(assets)    
-            if next_:
-                cursor = next_
-                continue
-            else:
-                break
+        data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit=50&cursor={cursor}&format=json", 
+            headers=headers, proxies=proxies, timeout=1.5).json()
+        next_ = data.get('next')
+        assets = data.get('assets')
+        detail = data.get('detail')
+
+        if detail:
+            raise Exception(f'request error: {detail}')
 
         full_assets = []
-        for data in assets_lst:
-            for asset in data:
-                new_id = f'{asset["asset_contract"]["address"]}-{asset["token_id"]}'
-                asset['new_id'] = new_id
-                full_assets.append(asset)
-        return full_assets
+        for asset in assets:
+            asset_id = f'{asset["asset_contract"]["address"]}-{asset["token_id"]}'
+            asset['asset_id'] = asset_id
+            full_assets.append(asset)
+        return {
+            'assets': full_assets,
+            'cursor': next_
+        }
     
     def get_single_asset(self, contract, idx):
         proxies = get_proxies()

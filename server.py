@@ -6,7 +6,7 @@ import logging
 import glob
 import datetime
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 from opensea_assets import assets
 from opensea_collection import collection
@@ -19,7 +19,8 @@ app = Flask(__name__)
 @app.route('/opensea/assets/<owner>', methods=['POST', 'GET'])
 def get_owner_assets(owner):
     try:
-        full_assets = assets.get_owner_assets(owner)
+        cursor = request.args.get('cursor', '')
+        full_assets = assets.get_owner_assets(owner, cursor)
     except Exception as ex:
         logging.error(ex)
         return jsonify({'code': -1})
