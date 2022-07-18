@@ -7,8 +7,9 @@ from flask_apscheduler import APScheduler
 
 scheduler = APScheduler()
 TOKEN = config('TOKEN')
-print(f'Token: {TOKEN}')
-URL = f'http://list.rola.info:8088/user_get_ip_list?token={TOKEN}&qty=5' + \
+IP_NUM = config('IP_NUM')
+print(f'Token: {TOKEN}, IP number: {IP_NUM}')
+URL = f'http://list.rola.info:8088/user_get_ip_list?token={TOKEN}&qty={IP_NUM}' + \
     '&country=us&state=&city=&time=10&format=json&protocol=http&filter=1&area=us'
 proxies = []
 
@@ -28,6 +29,7 @@ def generate_proxies():
     print('Refreshing proxies...')
     resp = requests.get(URL).json()
     domains = resp['data']
+    print(resp)
     global proxies
     proxies = domains
     proxies.append(None)
