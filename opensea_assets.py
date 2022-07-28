@@ -24,12 +24,13 @@ class Assets(object):
     def __init__(self, ):
         pass
 
-    def get_owner_assets(self, owner, cursor):
+    def get_owner_assets(self, owner, limit=50, cursor=''):
         proxies = get_proxies()
         assets_lst = []
 
-        data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit=50&cursor={cursor}&format=json", 
+        data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit={limit}&cursor={cursor}&format=json", 
             headers=headers, proxies=proxies, timeout=1.5).json()
+
         next_ = data.get('next')
         assets = data.get('assets')
         detail = data.get('detail')

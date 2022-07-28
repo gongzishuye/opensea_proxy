@@ -20,7 +20,8 @@ app = Flask(__name__)
 def get_owner_assets(owner):
     try:
         cursor = request.args.get('cursor', '')
-        full_assets = assets.get_owner_assets(owner, cursor)
+        limit = request.args.get('limit', 50)
+        full_assets = assets.get_owner_assets(owner, limit, cursor)
     except Exception as ex:
         logging.error(ex)
         return jsonify({'code': -1})
