@@ -1,3 +1,6 @@
 python-decouple
 flask
 flask_apscheduler
+cloudscraper==1.2.64
+fake-useragent
+

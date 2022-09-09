@@ -1,9 +1,12 @@
 import logging
 
 import cloudscraper
+from fake_useragent import UserAgent
 
 from proxy_generator import get_proxies
 
+
+ua = UserAgent()
 
 # This creates a new Scraper instance that can get past the OpenSea Cloudflare protections
 scraper = cloudscraper.create_scraper(
@@ -28,6 +31,7 @@ class Collection(object):
 
     def get_contract(self, contract_addr):
         proxies = get_proxies()
+        headers = { 'User-Agent': ua.random }
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/asset_contract/{contract_addr}?format=json", 
                 headers=headers, proxies=proxies, timeout=1.5).json()
@@ -40,6 +44,7 @@ class Collection(object):
 
     def get_collection(self, slug):
         proxies = get_proxies()
+        headers = { 'User-Agent': ua.random }
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}?format=json", 
                 headers=headers, proxies=proxies, timeout=1.5).json()
@@ -50,6 +55,7 @@ class Collection(object):
     
     def get_stats(self, slug):
         proxies = get_proxies()
+        headers = { 'User-Agent': ua.random }
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}/stats?format=json", 
                 headers=headers, proxies=proxies, timeout=1.5).json()

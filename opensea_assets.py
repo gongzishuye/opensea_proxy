@@ -1,7 +1,12 @@
+import logging
+
 import cloudscraper
+from fake_useragent import UserAgent
 
 from proxy_generator import get_proxies
 
+
+ua = UserAgent()
 
 # This creates a new Scraper instance that can get past the OpenSea Cloudflare protections
 scraper = cloudscraper.create_scraper(
@@ -11,10 +16,6 @@ scraper = cloudscraper.create_scraper(
         'mobile': False
     }
 )
-
-headers = {
-    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
-}
 
 
 class Assets(object):
@@ -27,7 +28,8 @@ class Assets(object):
     def get_owner_assets(self, owner, limit=50, cursor=''):
         proxies = get_proxies()
         assets_lst = []
-
+ 
+        headers = { 'User-Agent': ua.random }
         data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit={limit}&cursor={cursor}&format=json", 
             headers=headers, proxies=proxies, timeout=1.5).json()
 
@@ -51,10 +53,12 @@ class Assets(object):
     def get_single_asset(self, contract, idx):
         proxies = get_proxies()
         try:
+            headers = { 'User-Agent': ua.random }
             data = scraper.get(f"{Assets.BASE_URL}/v1/asset/{contract}/{idx}?format=json", headers=headers, 
                 proxies=proxies, timeout=1.5).json()
         except Exception as err:
-            logging.info(f'contract_addr [{contract}] idx [{idx}] error: {err}')
+            msg = f'contract_addr [{contract}] idx [{idx}] error: {err}'
+            print(msg)
             return None
         return data
 
