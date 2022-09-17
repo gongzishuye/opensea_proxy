@@ -17,9 +17,7 @@ scraper = cloudscraper.create_scraper(
     }
 )
 
-headers = {
-    'User-Agent': "Mozilla/5.0 (Macintosh; Intel Mac OS X 12_2_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36"
-}
+headers = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11' }
 
 
 class Collection(object):
@@ -31,7 +29,6 @@ class Collection(object):
 
     def get_contract(self, contract_addr):
         proxies = get_proxies()
-        headers = { 'User-Agent': ua.random }
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/asset_contract/{contract_addr}?format=json", 
                 headers=headers, proxies=proxies, timeout=1.5).json()
@@ -44,7 +41,6 @@ class Collection(object):
 
     def get_collection(self, slug):
         proxies = get_proxies()
-        headers = { 'User-Agent': ua.random }
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}?format=json", 
                 headers=headers, proxies=proxies, timeout=1.5).json()
@@ -55,7 +51,6 @@ class Collection(object):
     
     def get_stats(self, slug):
         proxies = get_proxies()
-        headers = { 'User-Agent': ua.random }
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}/stats?format=json", 
                 headers=headers, proxies=proxies, timeout=1.5).json()
@@ -69,6 +64,7 @@ collection = Collection()
 
 
 if __name__ == '__main__':
-    # print(collection.get_contract('0x06012c8cf97bead5deae237070f9587f8e7a266d'))
+    import json
+    print(json.dumps(collection.get_contract('0x06012c8cf97bead5deae237070f9587f8e7a266d')))
     # print(collection.get_collection('doodles-official'))
-    print(collection.get_stats('doodles-official'))
+    # print(collection.get_stats('doodles-official'))

@@ -17,6 +17,8 @@ scraper = cloudscraper.create_scraper(
     }
 )
 
+headers = { 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.11' }
+
 
 class Assets(object):
 
@@ -29,9 +31,8 @@ class Assets(object):
         proxies = get_proxies()
         assets_lst = []
  
-        headers = { 'User-Agent': ua.random }
         data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit={limit}&cursor={cursor}&format=json", 
-            headers=headers, proxies=proxies, timeout=1.5).json()
+            headers=headers, timeout=10).json()
 
         next_ = data.get('next')
         assets = data.get('assets')
@@ -53,9 +54,8 @@ class Assets(object):
     def get_single_asset(self, contract, idx):
         proxies = get_proxies()
         try:
-            headers = { 'User-Agent': ua.random }
             data = scraper.get(f"{Assets.BASE_URL}/v1/asset/{contract}/{idx}?format=json", headers=headers, 
-                proxies=proxies, timeout=1.5).json()
+                timeout=10).json()
         except Exception as err:
             msg = f'contract_addr [{contract}] idx [{idx}] error: {err}'
             print(msg)
@@ -67,6 +67,6 @@ assets = Assets()
 
 
 if __name__ == '__main__':
-    # print(assets.get_owner_assets('0xc892Eb27936E867a25F1bd7585156f69EA34adAE'))
-    print(assets.get_single_asset('0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb', '1'))
+    print(assets.get_owner_assets('0xc892Eb27936E867a25F1bd7585156f69EA34adAE'))
+    #print(assets.get_single_asset('0xb47e3cd837ddf8e4c57f05d70ab865de6e193bbb', '1'))
 
