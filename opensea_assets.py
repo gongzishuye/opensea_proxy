@@ -32,6 +32,7 @@ class Assets(object):
         assets_lst = []
  
         data = scraper.get(f"{Assets.BASE_URL}/v1/assets?owner={owner}&order_direction=asc&limit={limit}&cursor={cursor}&format=json", 
+            proxies=proxies, 
             headers=headers, timeout=10).json()
 
         next_ = data.get('next')
@@ -55,6 +56,7 @@ class Assets(object):
         proxies = get_proxies()
         try:
             data = scraper.get(f"{Assets.BASE_URL}/v1/asset/{contract}/{idx}?format=json", headers=headers, 
+                proxies=proxies,
                 timeout=10).json()
         except Exception as err:
             msg = f'contract_addr [{contract}] idx [{idx}] error: {err}'

@@ -31,7 +31,7 @@ class Collection(object):
         proxies = get_proxies()
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/asset_contract/{contract_addr}?format=json", 
-                headers=headers, proxies=proxies, timeout=1.5).json()
+                headers=headers, proxies=proxies, timeout=3).json()
         except Exception as err:
             print(f'contract_addr [{contract_addr}] error: {err}')
             return None
@@ -43,7 +43,7 @@ class Collection(object):
         proxies = get_proxies()
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}?format=json", 
-                headers=headers, proxies=proxies, timeout=1.5).json()
+                headers=headers, proxies=proxies, timeout=3).json()
         except Exception as err:
             print(f'slug [{slug}] error: {err}')
             return None
@@ -53,7 +53,7 @@ class Collection(object):
         proxies = get_proxies()
         try:
             data = scraper.get(f"{self.BASE_URL}/v1/collection/{slug}/stats?format=json", 
-                headers=headers, proxies=proxies, timeout=1.5).json()
+                headers=headers, proxies=proxies, timeout=3).json()
         except Exception as err:
             print(f'slug [{slug}] error: {err}')
             return None

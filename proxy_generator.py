@@ -16,8 +16,8 @@ proxies = []
 
 def get_proxies():
     global proxies
-    domain = '' if not proxies else random.choice(proxies)
-    domain = '' if not domain else domain
+    domain = None if not proxies else random.choice(proxies)
+    domain = None if not domain else domain
     print(f'Using domain: {domain}')
     return {
         'https': domain
@@ -36,4 +36,4 @@ def generate_proxies():
     print(proxies)
 
 
-#generate_proxies()
+generate_proxies()
